@@ -16,41 +16,26 @@ export default new class ProvinceServices {
             return "message: something error while creating province"
         }
     }
-
-    async update(id: string, data: any): Promise<object | string> {
-      try {
-        const numericId = parseInt(id, 10);
-        if (isNaN(numericId)) {
+    async update(id: number, data: any): Promise<object | string> {
+        try {
+          const response = await this.ProvinceRepository.update(id, data);
           return {
-            message: "Invalid ID provided",
-            error: "Invalid input for type integer"
+            message: "success updating a province",
+            data: response
+          };
+        } catch (error) {
+          console.error('Error updating province:', error);
+          return {
+            message: "something error while updating province",
+            error: error.message
           };
         }
-        const response = await this.ProvinceRepository.update(numericId, data);
-    
-        return {
-          message: "success updating a province",
-          data: response
-        };
-      } catch (error) {
-        console.error('Error updating province:', error);
-        return {
-          message: "something error while updating province",
-          error: error.message
-        };
       }
-    }
+      
 
-    async delete(id: string): Promise<object | string> {
+    async delete(id: number): Promise<object | string> {
         try {
-            const numericId = parseInt(id, 10);
-            if (isNaN(numericId)) {
-                return {
-                    message: "Invalid ID provided",
-                    error: "Invalid input for type integer"
-                };
-            }
-            const response = await this.ProvinceRepository.delete(numericId);
+            const response = await this.ProvinceRepository.delete(id);
             return {
                 message: "success deleting a province",
                 data: response

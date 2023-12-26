@@ -15,19 +15,26 @@ export default new class ProvinceController {
 
     async update(req: Request, res: Response) {
         try {
-            const id = req.params.id;
-            const data = req.body;
-            const response = await provinceServices.update(id, data);
-            return res.status(200).json(response);
+          const id = parseInt(req.params.id, 10);
+          if (isNaN(id)) {
+            return res.status(400).json({ message: "Invalid ID provided", error: "Invalid input for type number" });
+          }
+          const data = req.body;
+          const response = await provinceServices.update(id, data);
+          return res.status(200).json(response);
         } catch (error) {
-            console.error('Error updating province:', error);
-            return res.status(500).json({ message: "Internal server error", error: error.message });
+          console.error('Error updating province:', error);
+          return res.status(500).json({ message: "Internal server error", error: error.message });
         }
-    }
+      }
 
     async delete(req: Request, res: Response) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id, 10);
+            if (isNaN(id)) {
+                return res.status(400).json({ message: "Invalid ID provided", error: "Invalid input for type number" });
+            }
+
             const response = await provinceServices.delete(id);
             return res.status(200).json(response);
         } catch (error) {
